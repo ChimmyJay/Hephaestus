@@ -1,7 +1,20 @@
 ﻿@{
     ViewData["Title"] = "Focus Tool";
 }
-
-<div class="text-center">
-    <p class="display-4">Empty</p>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<div id="app">
+    <div class="text-center">
+        <p class="display-4">{{FocusItemName}}</p>
+    </div>
 </div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            FocusItemName: "Empty"
+        },
+    })
+</script>
