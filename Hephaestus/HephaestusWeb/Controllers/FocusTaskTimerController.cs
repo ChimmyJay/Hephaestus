@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HephaestusWeb.Controllers
 {
-    public class FocusToolController : Controller
+    public class FocusTaskTimerController : Controller
     {
         public IActionResult Index()
         {
