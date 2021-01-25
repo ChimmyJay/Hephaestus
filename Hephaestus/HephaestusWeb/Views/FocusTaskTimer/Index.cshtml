@@ -6,7 +6,11 @@
 </head>
 <div id="app">
     <div class="text-center">
-        <p class="display-4">{{FocusItemName}}</p>
+        <div class=" input-group">
+            <input type="text" class="form-control" placeholder="Type task name in this"
+                   v-model="FocusTask"/>
+            <button type="button" class="btn btn-success">Start</button>
+        </div>
     </div>
 </div>
 
@@ -14,7 +18,7 @@
     new Vue({
         el: '#app',
         data: {
-            FocusItemName: "Empty"
+            FocusTask: ""
         },
     })
 </script>
