@@ -8,10 +8,14 @@
     <div class="text-center">
         <div class=" input-group">
             <input type="text" class="form-control" placeholder="Type task name in this"
-                   v-model="FocusTask" :disabled="isDisabled" />
+                   v-model="FocusTask" :disabled="IsFocusing" />
             <button type="button" class="btn btn-success"
-                    v-on:click="OnFocusTask" :disabled="isDisabled">
+                    v-on:click="OnStartFocus" :disabled="IsFocusing">
                 Start
+            </button>
+            <button type="button" class="btn btn-danger"
+                    v-on:click="OnStopFocus" :disabled="!IsFocusing">
+                Stop
             </button>
         </div>
     </div>
@@ -24,14 +28,12 @@
             FocusTask: "",
             IsFocusing: false
         },
-        computed: {
-            isDisabled: function () {
-                return this.IsFocusing === true;
-            }
-        },
         methods: {
-            OnFocusTask: function () {
+            OnStartFocus: function () {
                 this.IsFocusing = true;
+            },
+            OnStopFocus: function () {
+                this.IsFocusing = false;
             }
         }
     })
