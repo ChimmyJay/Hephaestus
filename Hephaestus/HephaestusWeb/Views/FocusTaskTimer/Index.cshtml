@@ -18,6 +18,9 @@
                 Stop
             </button>
         </div>
+        <div>
+            <span style="font-size: 3rem">{{DisplayElapsedTime}}</span>
+        </div>
     </div>
 </div>
 
@@ -26,14 +29,38 @@
         el: '#app',
         data: {
             FocusTask: "",
-            IsFocusing: false
+            IsFocusing: false,
+            ElapsedTime: 0,
+            timer: null
+        },
+        computed: {
+            DisplayElapsedTime: function() {
+                const date = new Date(0);
+                date.setSeconds(this.ElapsedTime);
+                return date.toISOString().substr(11, 8);
+            }
         },
         methods: {
             OnStartFocus: function() {
                 this.IsFocusing = true;
+                this.StartCalculateElapsedTime();
             },
             OnStopFocus: function() {
                 this.IsFocusing = false;
+                this.StopCalculateElapsedTime();
+            },
+            StartCalculateElapsedTime: function() {
+                const self = this;
+                this.timer = setInterval(() => {
+                    self.ElapsedTime += 1;
+                }, 1000);
+            },
+            StopCalculateElapsedTime: function() {
+                const timer = this.timer;
+                if (timer) {
+                    clearInterval(timer);
+                }
+                this.ElapsedTime = 0;
             }
         }
     })
