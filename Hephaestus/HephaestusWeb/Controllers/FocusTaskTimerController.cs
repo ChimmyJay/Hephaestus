@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HephaestusWeb.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace HephaestusWeb.Controllers
 {
@@ -11,6 +9,16 @@ namespace HephaestusWeb.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult GetFocusingTask()
+        {
+            return Json(new FocusTaskViewModel
+            {
+                HasFocusTask = true,
+                TaskName = "TestFocusingTask",
+                TaskStartTime = DateTime.Now.AddMinutes(-2)
+            });
         }
     }
 }

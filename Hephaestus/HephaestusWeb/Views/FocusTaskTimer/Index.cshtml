@@ -33,6 +33,19 @@
             ElapsedTime: 0,
             timer: null
         },
+        created: function() {
+            const self = this;
+            fetch('FocusTaskTimer/GetFocusingTask', { method: 'GET' })
+                .then(response => { return response.json(); })
+                .then(data => {
+                    if (data.hasFocusTask) {
+                        self.FocusTask = data.taskName;
+                        self.ElapsedTime = Math.floor((Date.now() - Date.parse(data.taskStartTime)) / 1000);
+                        self.OnStartFocus();
+                    }
+                });
+
+        },
         computed: {
             DisplayElapsedTime: function() {
                 const date = new Date(0);
@@ -51,9 +64,7 @@
             },
             StartCalculateElapsedTime: function() {
                 const self = this;
-                this.timer = setInterval(() => {
-                    self.ElapsedTime += 1;
-                }, 1000);
+                this.timer = setInterval(() => { self.ElapsedTime += 1; }, 1000);
             },
             StopCalculateElapsedTime: function() {
                 const timer = this.timer;
