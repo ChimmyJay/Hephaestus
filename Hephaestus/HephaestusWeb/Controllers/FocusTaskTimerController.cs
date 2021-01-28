@@ -1,11 +1,18 @@
-﻿using HephaestusWeb.Models;
+﻿using HephaestusDomain.Services;
+using HephaestusWeb.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace HephaestusWeb.Controllers
 {
     public class FocusTaskTimerController : Controller
     {
+        private readonly IFocusTaskTimerService _focusTaskTimerService;
+
+        public FocusTaskTimerController(IFocusTaskTimerService focusTaskTimerService)
+        {
+            _focusTaskTimerService = focusTaskTimerService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -13,11 +20,12 @@ namespace HephaestusWeb.Controllers
 
         public IActionResult GetFocusingTask()
         {
+            var focusingTask = _focusTaskTimerService.GetFocusingTask();
             return Json(new FocusTaskViewModel
             {
-                HasFocusTask = true,
-                TaskName = "TestFocusingTask",
-                TaskStartTime = DateTime.Now.AddMinutes(-2)
+                HasFocusTask = focusingTask != null,
+                TaskName = focusingTask?.Name,
+                TaskStartTime = focusingTask?.StartTime
             });
         }
     }
