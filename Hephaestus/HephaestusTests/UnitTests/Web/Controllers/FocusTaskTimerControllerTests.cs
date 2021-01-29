@@ -1,3 +1,4 @@
+using System;
 using HephaestusDomain.Models;
 using HephaestusDomain.Services;
 using HephaestusWeb.Controllers;
@@ -6,9 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
-using System;
 
-namespace HephaestusTests.UnitTests.Web
+namespace HephaestusTests.UnitTests.Web.Controllers
 {
     [TestFixture]
     public class FocusTaskTimerControllerTests
@@ -26,14 +26,14 @@ namespace HephaestusTests.UnitTests.Web
         [Test]
         public void HasFocusTask_should_be_true_when_has_focusing_task()
         {
-            GivenFocusingTask(new FocusingTask());
+            GivenFocusingTask(new FocusTask());
             HasFocusTaskShouldBe(true);
         }
 
         [Test]
         public void verify_task_info_mapping_when_has_focusing_task()
         {
-            var focusingTask = new FocusingTask
+            var focusingTask = new FocusTask
             {
                 Name = "Task1",
                 StartTime = new DateTime(2021, 1, 1)
@@ -49,12 +49,12 @@ namespace HephaestusTests.UnitTests.Web
             HasFocusTaskShouldBe(false);
         }
 
-        private void TaskInfoShouldMapping(FocusingTask focusingTask)
+        private void TaskInfoShouldMapping(FocusTask focusTask)
         {
             var jsonResult = (JsonResult)_target.GetFocusingTask();
             var data = (FocusTaskViewModel)jsonResult.Value;
-            Assert.AreEqual(focusingTask.Name, data.TaskName);
-            Assert.AreEqual(focusingTask.StartTime, data.TaskStartTime);
+            Assert.AreEqual(focusTask.Name, data.TaskName);
+            Assert.AreEqual(focusTask.StartTime, data.TaskStartTime);
         }
 
         private void NotGivenFocusingTask()
@@ -69,9 +69,9 @@ namespace HephaestusTests.UnitTests.Web
             Assert.AreEqual(expected, data.HasFocusTask);
         }
 
-        private void GivenFocusingTask(FocusingTask focusingTask)
+        private void GivenFocusingTask(FocusTask focusTask)
         {
-            _fakeFocusTaskTimerService.GetFocusingTask().Returns(focusingTask);
+            _fakeFocusTaskTimerService.GetFocusingTask().Returns(focusTask);
         }
     }
 }
