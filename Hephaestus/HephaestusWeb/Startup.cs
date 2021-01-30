@@ -20,7 +20,8 @@ namespace HephaestusWeb
         public void ConfigureServices(IServiceCollection services)
         {
             var mvcBuilder = services.AddControllersWithViews();
-            services.AddSingleton<IControllerActivator>(new CustomControllerActivator());
+            var dataSourceConnectionString = Configuration.GetConnectionString("HephaestusDb");
+            services.AddSingleton<IControllerActivator>(new CustomControllerActivator(dataSourceConnectionString));
 #if DEBUG
             mvcBuilder.AddRazorRuntimeCompilation();
 #endif
