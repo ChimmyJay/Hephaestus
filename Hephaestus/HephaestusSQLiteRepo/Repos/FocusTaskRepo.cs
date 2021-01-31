@@ -1,5 +1,6 @@
 using HephaestusDomain.Models;
 using HephaestusDomain.Repos;
+using HephaestusSQLiteRepo.Entities;
 using System.Linq;
 
 namespace HephaestusSQLiteRepo.Repos
@@ -21,8 +22,20 @@ namespace HephaestusSQLiteRepo.Repos
                 : new FocusTask { Name = entity.Name, StartTime = entity.StartTime };
         }
 
-        public void Set(StartFocusingTaskDto startFocusingTaskDto)
+        public void Set(StartFocusingTaskDto dto)
         {
+            var focusTaskEntity = _context.FocusTasks.SingleOrDefault();
+            if (focusTaskEntity != null)
+            {
+                _context.FocusTasks.Remove(focusTaskEntity);
+            }
+
+            _context.FocusTasks.Add(new FocusTaskEntity()
+            {
+                Name = dto.Name,
+                StartTime = dto.StartTime
+            });
+            _context.SaveChanges();
         }
     }
 }
