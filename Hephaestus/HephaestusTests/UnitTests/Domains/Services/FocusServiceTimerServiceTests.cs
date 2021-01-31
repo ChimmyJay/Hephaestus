@@ -21,7 +21,7 @@ namespace HephaestusTests.UnitTests.Domains.Services
         }
 
         [Test]
-        public void get_focusing_task()
+        public void GetFocusingTask()
         {
             var focusTask = new FocusTask
             {
@@ -31,6 +31,16 @@ namespace HephaestusTests.UnitTests.Domains.Services
             GivenToRepo(focusTask);
             TaskInfoShouldMapping(focusTask);
             GetFromRepoShouldBeCall(1);
+        }
+
+        [Test]
+        public void StartFocusingTask()
+        {
+            var startFocusingTaskDto = new StartFocusingTaskDto();
+
+            _target.StartFocusingTask(startFocusingTaskDto);
+
+            _fakeRepo.Received(1).Set(startFocusingTaskDto);
         }
 
         private void GivenToRepo(FocusTask focusTask)
