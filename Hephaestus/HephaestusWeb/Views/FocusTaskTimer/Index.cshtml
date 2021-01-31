@@ -6,7 +6,7 @@
     <div class="text-center">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Type task name in this"
-                   v-model="FocusTask" :disabled="IsFocusing"/>
+                   v-model="FocusTask" :disabled="IsFocusing" />
             <button type="button" class="btn btn-success"
                     v-on:click="OnStartFocus" :disabled="IsFocusing">
                 Start
@@ -31,7 +31,7 @@
             ElapsedTime: 0,
             timer: null
         },
-        created: function() {
+        created: function () {
             const self = this;
             fetch('FocusTaskTimer/GetFocusingTask', { method: 'GET' })
                 .then(response => { return response.json(); })
@@ -39,49 +39,55 @@
                     if (data.hasFocusTask) {
                         self.FocusTask = data.taskName;
                         self.ElapsedTime = Math.floor((Date.now() - Date.parse(data.taskStartTime)) / 1000);
-                        self.OnStartFocus();
+                        self.IsFocusing = true;
                     }
                 });
 
         },
         computed: {
-            DisplayElapsedTime: function() {
+            DisplayElapsedTime: function () {
                 const date = new Date(0);
                 date.setSeconds(this.ElapsedTime);
                 return date.toISOString().substr(11, 8);
             }
         },
+        watch: {
+            IsFocusing: function (val) {
+                if (val) {
+                    this.StartCalculateElapsedTime();
+                } else {
+                    this.StopCalculateElapsedTime();
+                }
+            }
+        },
         methods: {
-            OnStartFocus: function() {
+            OnStartFocus: function () {
                 this.IsFocusing = true;
-                this.StartCalculateElapsedTime();
-
                 fetch('FocusTaskTimer/StartFocusingTask',
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                name: this.FocusTask,
-                                startTime: new Date()
-                            })
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: this.FocusTask,
+                            startTime: new Date()
                         })
+                    })
                     .then(response => {
                         if (response.status !== 200) {
                             alert('Occur error.');
                         }
                     });
             },
-            OnStopFocus: function() {
+            OnStopFocus: function () {
                 this.IsFocusing = false;
-                this.StopCalculateElapsedTime();
             },
-            StartCalculateElapsedTime: function() {
+            StartCalculateElapsedTime: function () {
                 const self = this;
                 this.timer = setInterval(() => { self.ElapsedTime += 1; }, 1000);
             },
-            StopCalculateElapsedTime: function() {
+            StopCalculateElapsedTime: function () {
                 const timer = this.timer;
                 if (timer) {
                     clearInterval(timer);
