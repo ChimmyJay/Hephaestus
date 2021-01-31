@@ -1,4 +1,5 @@
-﻿using HephaestusDomain.Services;
+﻿using HephaestusDomain.Models;
+using HephaestusDomain.Services;
 using HephaestusWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,18 @@ namespace HephaestusWeb.Controllers
                 TaskName = focusingTask?.Name,
                 TaskStartTime = focusingTask?.StartTime
             });
+        }
+
+        [HttpPost]
+        public IActionResult StartFocusingTask([FromBody] StartFocusingTaskRequest request)
+        {
+            var dto = new StartFocusingTaskDto
+            {
+                Name = request.Name,
+                StartTime = request.StartTime
+            };
+            _focusTaskTimerService.StartFocusingTask(dto);
+            return Ok();
         }
     }
 }

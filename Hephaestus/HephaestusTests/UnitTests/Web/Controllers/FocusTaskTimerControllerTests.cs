@@ -1,4 +1,3 @@
-using System;
 using HephaestusDomain.Models;
 using HephaestusDomain.Services;
 using HephaestusWeb.Controllers;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
+using System;
 
 namespace HephaestusTests.UnitTests.Web.Controllers
 {
@@ -15,6 +15,7 @@ namespace HephaestusTests.UnitTests.Web.Controllers
     {
         private IFocusTaskTimerService _fakeFocusTaskTimerService;
         private FocusTaskTimerController _target;
+        private IActionResult _actual;
 
         [SetUp]
         public void SetUp()
@@ -24,14 +25,14 @@ namespace HephaestusTests.UnitTests.Web.Controllers
         }
 
         [Test]
-        public void HasFocusTask_should_be_true_when_has_focusing_task()
+        public void GetFocusingTask_HasFocusTask_should_be_true_when_has_focusing_task()
         {
             GivenFocusingTask(new FocusTask());
             HasFocusTaskShouldBe(true);
         }
 
         [Test]
-        public void verify_task_info_mapping_when_has_focusing_task()
+        public void GetFocusingTask_verify_task_info_mapping_when_has_focusing_task()
         {
             var focusingTask = new FocusTask
             {
@@ -43,10 +44,45 @@ namespace HephaestusTests.UnitTests.Web.Controllers
         }
 
         [Test]
-        public void HasFocusTask_should_be_false_when_not_has_focusing_task()
+        public void GetFocusingTask_HasFocusTask_should_be_false_when_not_has_focusing_task()
         {
             NotGivenFocusingTask();
             HasFocusTaskShouldBe(false);
+        }
+
+        [Test]
+        public void StartFocusingTask()
+        {
+            var request = new StartFocusingTaskRequest
+            {
+                Name = "test",
+                StartTime = new DateTime(2020, 01, 30)
+            };
+
+            WhenServiceStartFocusingTask(request);
+
+            _fakeFocusTaskTimerService
+                .Received(1)
+                .StartFocusingTask(Arg.Is<StartFocusingTaskDto>(x =>
+                    x.Name == request.Name
+                    && x.StartTime == request.StartTime));
+            HttpStatusCodeShouldBe(200);
+        }
+
+        private void WhenServiceStartFocusingTask(StartFocusingTaskRequest request)
+        {
+            _actual = _target.StartFocusingTask(request);
+        }
+
+        private void HttpStatusCodeShouldBe(int expected)
+        {
+            var statusCodeResult = (StatusCodeResult)_actual;
+            Assert.AreEqual(expected, statusCodeResult.StatusCode);
+        }
+
+        private static void HttpStatusCodeShouldBe(int expected, StatusCodeResult actual)
+        {
+            Assert.AreEqual(expected, actual.StatusCode);
         }
 
         private void TaskInfoShouldMapping(FocusTask focusTask)
