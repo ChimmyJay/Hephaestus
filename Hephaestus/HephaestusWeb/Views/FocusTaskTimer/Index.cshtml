@@ -1,6 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Focus Tool";
-}
+﻿@{ ViewData["Title"] = "Focus Tool"; }
 <head>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 </head>
@@ -57,6 +55,23 @@
             OnStartFocus: function() {
                 this.IsFocusing = true;
                 this.StartCalculateElapsedTime();
+
+                fetch('FocusTaskTimer/StartFocusingTask',
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                name: this.FocusTask,
+                                startTime: new Date()
+                            })
+                        })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            alert('Occur error.');
+                        }
+                    });
             },
             OnStopFocus: function() {
                 this.IsFocusing = false;
