@@ -3,14 +3,16 @@ using System;
 using HephaestusSQLiteRepo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HephaestusSQLiteRepo.Migrations
 {
     [DbContext(typeof(SQLiteContext))]
-    partial class SQLiteContextModelSnapshot : ModelSnapshot
+    [Migration("20210131145408_fix_foucsTask_wrong_timezone")]
+    partial class fix_foucsTask_wrong_timezone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
