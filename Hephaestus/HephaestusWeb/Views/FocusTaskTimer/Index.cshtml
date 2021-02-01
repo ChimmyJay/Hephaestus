@@ -63,9 +63,7 @@
                         self.IsFocusing = true;
                     }
                 });
-            fetch('FocusTaskTimer/GetFocusTaskHistory', { method: 'GET' })
-                .then(response => { return response.json(); })
-                .then(data => { self.histories = data; });
+            this.updateHistories();
         },
         watch: {
             IsFocusing: function (val) {
@@ -97,7 +95,8 @@
                     });
             },
             OnStopFocus: function () {
-                this.IsFocusing = false;
+                const self = this;
+                self.IsFocusing = false;
                 fetch('FocusTaskTimer/StopFocusingTask',
                     {
                         method: 'POST',
@@ -111,6 +110,8 @@
                     .then(response => {
                         if (response.status !== 200) {
                             alert('Occur error.');
+                        } else {
+                            self.updateHistories();
                         }
                     });
 
@@ -130,6 +131,12 @@
                 const date = new Date(0);
                 date.setSeconds(elapsedTime);
                 return date.toISOString().substr(11, 8);
+            },
+            updateHistories: function() {
+                const self = this;
+                fetch('FocusTaskTimer/GetFocusTaskHistory', { method: 'GET' })
+                    .then(response => { return response.json(); })
+                    .then(data => { self.histories = data; });
             }
 
         }
