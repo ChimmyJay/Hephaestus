@@ -69,6 +69,22 @@ namespace HephaestusTests.UnitTests.Web.Controllers
             HttpStatusCodeShouldBe(200);
         }
 
+        [Test]
+        public void StopFocusingTask()
+        {
+            WhenServiceStopFocusingTask();
+
+            _fakeFocusTaskTimerService
+                .Received(1)
+                .StopFocusingTask();
+            HttpStatusCodeShouldBe(200);
+        }
+
+        private void WhenServiceStopFocusingTask()
+        {
+            _actual = _target.StopFocusingTask();
+        }
+
         private void WhenServiceStartFocusingTask(StartFocusingTaskRequest request)
         {
             _actual = _target.StartFocusingTask(request);

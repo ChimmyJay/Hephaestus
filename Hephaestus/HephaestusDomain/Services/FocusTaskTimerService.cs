@@ -21,5 +21,10 @@ namespace HephaestusDomain.Services
         {
             _focusTaskRepo.Set(startFocusingTaskDto);
         }
+
+        public void StopFocusingTask()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

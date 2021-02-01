@@ -41,5 +41,12 @@ namespace HephaestusWeb.Controllers
             _focusTaskTimerService.StartFocusingTask(dto);
             return Ok();
         }
+
+        [HttpPost]
+        public IActionResult StopFocusingTask()
+        {
+            _focusTaskTimerService.StopFocusingTask();
+            return Ok();
+        }
     }
 }
