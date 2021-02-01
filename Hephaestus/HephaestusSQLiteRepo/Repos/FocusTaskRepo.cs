@@ -1,6 +1,8 @@
 using HephaestusDomain.Models;
 using HephaestusDomain.Repos;
 using HephaestusSQLiteRepo.Entities;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HephaestusSQLiteRepo.Repos
@@ -14,22 +16,17 @@ namespace HephaestusSQLiteRepo.Repos
             _context = sqLiteContext;
         }
 
-        public FocusTask Get()
+        public FocusTask GetFocusing()
         {
-            var entity = _context.FocusTasks.SingleOrDefault();
+            var entity = _context.FocusTasks
+                .SingleOrDefault(x => !x.EndTime.HasValue);
             return entity == null
                 ? null
                 : new FocusTask { Name = entity.Name, StartTime = entity.StartTime.UtcDateTime };
         }
 
-        public void Set(StartFocusingTaskDto dto)
+        public void StartFocusing(StartFocusingTaskDto dto)
         {
-            var focusTaskEntity = _context.FocusTasks.SingleOrDefault();
-            if (focusTaskEntity != null)
-            {
-                _context.FocusTasks.Remove(focusTaskEntity);
-            }
-
             _context.FocusTasks.Add(new FocusTaskEntity()
             {
                 Name = dto.Name,
@@ -38,14 +35,25 @@ namespace HephaestusSQLiteRepo.Repos
             _context.SaveChanges();
         }
 
-        public void Clear()
+        public void StopFocusing(DateTime endTime)
         {
-            var focusTaskEntity = _context.FocusTasks.SingleOrDefault();
-            if (focusTaskEntity != null)
-            {
-                _context.FocusTasks.Remove(focusTaskEntity);
-            }
+            var entity = _context.FocusTasks
+                .Single(x => !x.EndTime.HasValue);
+            entity.EndTime = endTime;
+            _context.Update(entity);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<FocusTask> GetHistory()
+        {
+            return _context.FocusTasks
+                .Where(x => x.EndTime.HasValue)
+                .Select(x => new FocusTask
+                {
+                    Name = x.Name,
+                    StartTime = x.StartTime.UtcDateTime,
+                    EndTime = x.EndTime.Value.UtcDateTime,
+                }).ToList();
         }
     }
 }

@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
-namespace HephaestusDomain.Models
+namespace HephaestusWeb.Models
 {
-    public class FocusTask
+    public class FocusTaskHistoryViewModel
     {
         public string Name { get; set; }
         public DateTime StartTime { get; set; }

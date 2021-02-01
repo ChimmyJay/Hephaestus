@@ -1,6 +1,7 @@
 ﻿@{ ViewData["Title"] = "Focus Tool"; }
 <head>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 </head>
 <div id="app">
     <div class="text-center">
@@ -17,7 +18,27 @@
             </button>
         </div>
         <div>
-            <span style="font-size: 3rem">{{DisplayElapsedTime}}</span>
+            <span style="font-size: 3rem">{{DisplayElapsedTime(ElapsedTime)}}</span>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">StartTime</th>
+                        <th scope="col">EndTime</th>
+                        <th scope="col">Elapsed Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in histories">
+                        <td>{{item.name}}</td>
+                        <td>{{displayDateTime(item.startTime)}}</td>
+                        <td>{{displayDateTime(item.endTime)}}</td>
+                        <td>{{DisplayElapsedTime(item.elapsedTime)}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -29,7 +50,8 @@
             FocusTask: "",
             IsFocusing: false,
             ElapsedTime: 0,
-            timer: null
+            timer: null,
+            histories: []
         },
         created: function () {
             const self = this;
@@ -42,14 +64,7 @@
                         self.IsFocusing = true;
                     }
                 });
-
-        },
-        computed: {
-            DisplayElapsedTime: function () {
-                const date = new Date(0);
-                date.setSeconds(this.ElapsedTime);
-                return date.toISOString().substr(11, 8);
-            }
+            this.updateHistories();
         },
         watch: {
             IsFocusing: function (val) {
@@ -81,16 +96,23 @@
                     });
             },
             OnStopFocus: function () {
-                this.IsFocusing = false;
+                const self = this;
+                self.IsFocusing = false;
                 fetch('FocusTaskTimer/StopFocusingTask',
                     {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
-                        }                    })
+                        },
+                        body: JSON.stringify({
+                            endTime: new Date()
+                        })
+                    })
                     .then(response => {
                         if (response.status !== 200) {
                             alert('Occur error.');
+                        } else {
+                            self.updateHistories();
                         }
                     });
 
@@ -105,7 +127,22 @@
                     clearInterval(timer);
                 }
                 this.ElapsedTime = 0;
+            },
+            DisplayElapsedTime: function (elapsedTime) {
+                const date = new Date(0);
+                date.setSeconds(elapsedTime);
+                return date.toISOString().substr(11, 8);
+            },
+            updateHistories: function () {
+                const self = this;
+                fetch('FocusTaskTimer/GetFocusTaskHistory', { method: 'GET' })
+                    .then(response => { return response.json(); })
+                    .then(data => { self.histories = data; });
+            },
+            displayDateTime: function (utcDateTime) {
+                return moment(new Date(utcDateTime)).format('YYYY-MM-DD HH:mm:ss');
             }
+
         }
     })
 </script>
