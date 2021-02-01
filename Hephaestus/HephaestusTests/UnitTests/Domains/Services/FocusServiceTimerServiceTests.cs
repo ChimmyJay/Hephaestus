@@ -48,8 +48,9 @@ namespace HephaestusTests.UnitTests.Domains.Services
         [Test]
         public void StopFocusingTask()
         {
-            _target.StopFocusingTask();
-            _fakeRepo.Received(1).Clear();
+            var endTime = DateTime.Now;
+            _target.StopFocusingTask(endTime);
+            _fakeRepo.Received(1).StopFocusing(endTime);
         }
 
         [Test]

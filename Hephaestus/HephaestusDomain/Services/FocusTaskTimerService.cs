@@ -25,9 +25,9 @@ namespace HephaestusDomain.Services
             _focusTaskRepo.StartFocusing(startFocusingTaskDto);
         }
 
-        public void StopFocusingTask()
+        public void StopFocusingTask(DateTime endTime)
         {
-            _focusTaskRepo.Clear();
+            _focusTaskRepo.StopFocusing(endTime);
         }
 
         public IEnumerable<FocusTask> GetFocusTaskHistory()

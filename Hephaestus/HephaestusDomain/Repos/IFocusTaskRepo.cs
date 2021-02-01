@@ -1,3 +1,4 @@
+using System;
 using HephaestusDomain.Models;
 using System.Collections.Generic;
 
@@ -9,7 +10,7 @@ namespace HephaestusDomain.Repos
 
         void StartFocusing(StartFocusingTaskDto dto);
 
-        void Clear();
+        void StopFocusing(DateTime endTime);
 
         IEnumerable<FocusTask> GetHistory();
     }

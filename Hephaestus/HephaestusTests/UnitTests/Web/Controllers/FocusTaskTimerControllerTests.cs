@@ -74,11 +74,15 @@ namespace HephaestusTests.UnitTests.Web.Controllers
         [Test]
         public void StopFocusingTask()
         {
-            WhenServiceStopFocusingTask();
+            var endTime = DateTime.Now;
+            _actual = _target.StopFocusingTask(new StopFocusingTaskRequest()
+            {
+                EndTime = endTime
+            });
 
             _fakeFocusTaskTimerService
                 .Received(1)
-                .StopFocusingTask();
+                .StopFocusingTask(endTime);
             HttpStatusCodeShouldBe(200);
         }
 
@@ -104,11 +108,6 @@ namespace HephaestusTests.UnitTests.Web.Controllers
             Assert.AreEqual("2021-01-01 01:00:00", data.Single().StartTime);
             Assert.AreEqual("2021-01-01 01:00:20", data.Single().EndTime);
             Assert.AreEqual(20, data.Single().ElapsedTime);
-        }
-
-        private void WhenServiceStopFocusingTask()
-        {
-            _actual = _target.StopFocusingTask();
         }
 
         private void WhenServiceStartFocusingTask(StartFocusingTaskRequest request)

@@ -1,6 +1,7 @@
 using HephaestusDomain.Models;
 using HephaestusDomain.Repos;
 using HephaestusSQLiteRepo.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,13 +35,12 @@ namespace HephaestusSQLiteRepo.Repos
             _context.SaveChanges();
         }
 
-        public void Clear()
+        public void StopFocusing(DateTime endTime)
         {
-            var focusTaskEntity = _context.FocusTasks.SingleOrDefault();
-            if (focusTaskEntity != null)
-            {
-                _context.FocusTasks.Remove(focusTaskEntity);
-            }
+            var entity = _context.FocusTasks
+                .Single(x => !x.EndTime.HasValue);
+            entity.EndTime = endTime;
+            _context.Update(entity);
             _context.SaveChanges();
         }
 

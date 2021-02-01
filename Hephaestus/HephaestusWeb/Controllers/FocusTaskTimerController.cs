@@ -44,9 +44,9 @@ namespace HephaestusWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult StopFocusingTask()
+        public IActionResult StopFocusingTask([FromBody] StopFocusingTaskRequest stopFocusingTaskRequest)
         {
-            _focusTaskTimerService.StopFocusingTask();
+            _focusTaskTimerService.StopFocusingTask(stopFocusingTaskRequest.EndTime);
             return Ok();
         }
 
