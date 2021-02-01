@@ -5,7 +5,7 @@ namespace HephaestusDomain.Repos
 {
     public interface IFocusTaskRepo
     {
-        FocusTask Get();
+        FocusTask GetFocusing();
 
         void Set(StartFocusingTaskDto dto);
 

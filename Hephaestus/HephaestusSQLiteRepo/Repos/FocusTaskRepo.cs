@@ -15,9 +15,10 @@ namespace HephaestusSQLiteRepo.Repos
             _context = sqLiteContext;
         }
 
-        public FocusTask Get()
+        public FocusTask GetFocusing()
         {
-            var entity = _context.FocusTasks.SingleOrDefault();
+            var entity = _context.FocusTasks
+                .SingleOrDefault(x => !x.EndTime.HasValue);
             return entity == null
                 ? null
                 : new FocusTask { Name = entity.Name, StartTime = entity.StartTime.UtcDateTime };

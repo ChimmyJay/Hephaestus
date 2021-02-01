@@ -17,7 +17,7 @@ namespace HephaestusDomain.Services
 
         public FocusTask GetFocusingTask()
         {
-            return _focusTaskRepo.Get();
+            return _focusTaskRepo.GetFocusing();
         }
 
         public void StartFocusingTask(StartFocusingTaskDto startFocusingTaskDto)

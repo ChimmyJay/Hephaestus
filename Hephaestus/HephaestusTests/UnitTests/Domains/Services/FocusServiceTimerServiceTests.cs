@@ -71,7 +71,7 @@ namespace HephaestusTests.UnitTests.Domains.Services
 
         private void GivenToRepo(FocusTask focusTask)
         {
-            _fakeRepo.Get().Returns(focusTask);
+            _fakeRepo.GetFocusing().Returns(focusTask);
         }
 
         private void TaskInfoShouldMapping(FocusTask focusTask)
@@ -83,7 +83,7 @@ namespace HephaestusTests.UnitTests.Domains.Services
 
         private void GetFromRepoShouldBeCall(int times)
         {
-            _fakeRepo.Received(times).Get();
+            _fakeRepo.Received(times).GetFocusing();
         }
     }
 }
