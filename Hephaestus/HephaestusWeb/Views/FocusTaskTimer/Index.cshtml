@@ -17,7 +17,27 @@
             </button>
         </div>
         <div>
-            <span style="font-size: 3rem">{{DisplayElapsedTime}}</span>
+            <span style="font-size: 3rem">{{DisplayElapsedTime(ElapsedTime)}}</span>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">StartTime</th>
+                        <th scope="col">EndTime</th>
+                        <th scope="col">Elapsed Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in histories">
+                        <td>{{item.name}}</td>
+                        <td>{{item.startTime}}</td>
+                        <td>{{item.endTime}}</td>
+                        <td>{{DisplayElapsedTime(item.elapsedTime)}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -29,7 +49,8 @@
             FocusTask: "",
             IsFocusing: false,
             ElapsedTime: 0,
-            timer: null
+            timer: null,
+            histories: []
         },
         created: function () {
             const self = this;
@@ -42,14 +63,9 @@
                         self.IsFocusing = true;
                     }
                 });
-
-        },
-        computed: {
-            DisplayElapsedTime: function () {
-                const date = new Date(0);
-                date.setSeconds(this.ElapsedTime);
-                return date.toISOString().substr(11, 8);
-            }
+            fetch('FocusTaskTimer/GetFocusTaskHistory', { method: 'GET' })
+                .then(response => { return response.json(); })
+                .then(data => { self.histories = data; });
         },
         watch: {
             IsFocusing: function (val) {
@@ -87,7 +103,8 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
-                        }                    })
+                        }
+                    })
                     .then(response => {
                         if (response.status !== 200) {
                             alert('Occur error.');
@@ -105,7 +122,13 @@
                     clearInterval(timer);
                 }
                 this.ElapsedTime = 0;
+            },
+            DisplayElapsedTime: function (elapsedTime) {
+                const date = new Date(0);
+                date.setSeconds(elapsedTime);
+                return date.toISOString().substr(11, 8);
             }
+
         }
     })
 </script>
