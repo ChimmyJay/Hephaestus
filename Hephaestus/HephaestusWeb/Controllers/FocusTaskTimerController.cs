@@ -57,8 +57,8 @@ namespace HephaestusWeb.Controllers
                 .Select(x => new FocusTaskHistoryViewModel
                 {
                     Name = x.Name,
-                    StartTime = x.StartTime.ToString("yyyy-MM-dd hh:mm:ss"),
-                    EndTime = x.EndTime.ToString("yyyy-MM-dd hh:mm:ss"),
+                    StartTime = x.StartTime,
+                    EndTime = x.EndTime,
                     ElapsedTime = x.ElapsedTime
                 }).ToList();
             return Json(data);

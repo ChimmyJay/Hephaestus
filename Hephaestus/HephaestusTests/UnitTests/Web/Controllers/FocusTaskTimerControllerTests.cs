@@ -105,8 +105,8 @@ namespace HephaestusTests.UnitTests.Web.Controllers
 
             var data = (List<FocusTaskHistoryViewModel>)jsonResult.Value;
             Assert.AreEqual("Test1", data.Single().Name);
-            Assert.AreEqual("2021-01-01 01:00:00", data.Single().StartTime);
-            Assert.AreEqual("2021-01-01 01:00:20", data.Single().EndTime);
+            Assert.AreEqual(new DateTime(2021, 01, 01, 01, 00, 00), data.Single().StartTime);
+            Assert.AreEqual(new DateTime(2021, 01, 01, 01, 00, 20), data.Single().EndTime);
             Assert.AreEqual(20, data.Single().ElapsedTime);
         }
 
