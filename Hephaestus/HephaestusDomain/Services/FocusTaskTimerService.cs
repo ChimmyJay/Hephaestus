@@ -9,10 +9,12 @@ namespace HephaestusDomain.Services
     public class FocusTaskTimerService : IFocusTaskTimerService
     {
         private readonly IFocusTaskRepo _focusTaskRepo;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public FocusTaskTimerService(IFocusTaskRepo fakeRepo)
+        public FocusTaskTimerService(IFocusTaskRepo fakeRepo, IDateTimeProvider dateTimeProvider)
         {
             _focusTaskRepo = fakeRepo;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public FocusTask GetFocusingTask()
@@ -33,6 +35,7 @@ namespace HephaestusDomain.Services
         public IEnumerable<FocusTask> GetFocusTaskHistory()
         {
             return _focusTaskRepo.GetHistory()
+                .Where(x => x.EndTime >= _dateTimeProvider.Now().AddDays(-1))
                 .Select(x => new FocusTask()
                 {
                     Name = x.Name,

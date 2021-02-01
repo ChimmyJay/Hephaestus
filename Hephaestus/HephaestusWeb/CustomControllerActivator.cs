@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System;
 using System.Collections.Generic;
+using HephaestusDomain;
 
 namespace HephaestusWeb
 {
@@ -26,7 +27,7 @@ namespace HephaestusWeb
                 return new FocusTaskTimerController(
                     new FocusTaskTimerService(
                         new FocusTaskRepo(
-                            new SQLiteContext(_dataSourceConnectionString))));
+                            new SQLiteContext(_dataSourceConnectionString)), new DateTimeProvider()));
             }
             throw new Exception($"Unknown controller {type.Name}");
         }

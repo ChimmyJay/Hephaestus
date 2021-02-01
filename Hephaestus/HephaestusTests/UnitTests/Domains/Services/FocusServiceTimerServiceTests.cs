@@ -1,3 +1,4 @@
+using HephaestusDomain;
 using HephaestusDomain.Models;
 using HephaestusDomain.Repos;
 using HephaestusDomain.Services;
@@ -14,12 +15,14 @@ namespace HephaestusTests.UnitTests.Domains.Services
     {
         private IFocusTaskRepo _fakeRepo;
         private FocusTaskTimerService _target;
+        private IDateTimeProvider _dateTimeProvider;
 
         [SetUp]
         public void SetUp()
         {
             _fakeRepo = Substitute.For<IFocusTaskRepo>();
-            _target = new FocusTaskTimerService(_fakeRepo);
+            _dateTimeProvider = Substitute.For<IDateTimeProvider>();
+            _target = new FocusTaskTimerService(_fakeRepo, _dateTimeProvider);
         }
 
         [Test]
@@ -54,31 +57,58 @@ namespace HephaestusTests.UnitTests.Domains.Services
         }
 
         [Test]
-        public void GetFocusTaskHistory()
+        public void GetFocusTaskHistory_should_call_repo_GetHistory_once()
         {
+            var actual = _target.GetFocusTaskHistory();
+            _fakeRepo.Received(1).GetHistory();
+        }
+
+        [Test]
+        public void GetFocusTaskHistory_calculate_ElapsedTime()
+        {
+            _dateTimeProvider.Now().Returns(new DateTime(2021, 01, 01));
             _fakeRepo.GetHistory().Returns(new List<FocusTask>
             {
                 new FocusTask()
                 {
                     Name = "Test1",
-                    StartTime = new DateTime(2021, 01, 01, 01, 00, 00),
-                    EndTime = new DateTime(2021, 01, 01, 01, 00, 20),
+                    StartTime = new DateTime(2021,01,01).AddSeconds(-20),
+                    EndTime = new DateTime(2021,01,01)
                 }
             });
+
             var actual = _target.GetFocusTaskHistory();
+
             Assert.AreEqual(20, actual.Single().ElapsedTime);
-            _fakeRepo.Received(1).GetHistory();
+        }
+
+        [Test]
+        public void GetFocusTaskHistory_filter_filter_by_endTime_exceed_one_day()
+        {
+            _dateTimeProvider.Now().Returns(new DateTime(2021, 02, 02));
+            _fakeRepo.GetHistory().Returns(new List<FocusTask>
+            {
+                new FocusTask { EndTime = new DateTime(2021,02,01) },
+                new FocusTask { EndTime = new DateTime(2021,01,31) },
+                new FocusTask { EndTime = new DateTime(2021,01,30) },
+            });
+
+            var actual = _target.GetFocusTaskHistory();
+            Assert.AreEqual(1, actual.Count());
         }
 
         [Test]
         public void GetFocusTaskHistory_should_sort_by_endTime_descending()
         {
-            _fakeRepo.GetHistory().Returns(new List<FocusTask>
-            {
-                new FocusTask { EndTime = new DateTime(2021, 01, 01, 01, 00, 01)},
-                new FocusTask { EndTime = new DateTime(2021, 01, 01, 01, 00, 02)},
-                new FocusTask { EndTime = new DateTime(2021, 01, 01, 01, 00, 00)}
-            });
+            _dateTimeProvider.Now()
+                .Returns(new DateTime(2021, 01, 01));
+            _fakeRepo.GetHistory()
+                .Returns(new List<FocusTask>
+                {
+                    new FocusTask {EndTime = new DateTime(2021, 01, 01, 01, 00, 01)},
+                    new FocusTask {EndTime = new DateTime(2021, 01, 01, 01, 00, 02)},
+                    new FocusTask {EndTime = new DateTime(2021, 01, 01, 01, 00, 00)}
+                });
             var actual = _target.GetFocusTaskHistory();
             Assert.That(actual, Is.Ordered.Descending.By(nameof(FocusTask.EndTime)));
         }
