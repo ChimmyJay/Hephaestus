@@ -51,8 +51,8 @@ namespace HephaestusSQLiteRepo.Repos
                 .Select(x => new FocusTask
                 {
                     Name = x.Name,
-                    StartTime = x.StartTime.DateTime,
-                    EndTime = x.EndTime.Value.DateTime,
+                    StartTime = x.StartTime.UtcDateTime,
+                    EndTime = x.EndTime.Value.UtcDateTime,
                 }).ToList();
         }
     }
