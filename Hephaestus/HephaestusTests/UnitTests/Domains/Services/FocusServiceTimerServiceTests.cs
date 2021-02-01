@@ -70,6 +70,19 @@ namespace HephaestusTests.UnitTests.Domains.Services
             _fakeRepo.Received(1).GetHistory();
         }
 
+        [Test]
+        public void GetFocusTaskHistory_should_sort_by_endTime_descending()
+        {
+            _fakeRepo.GetHistory().Returns(new List<FocusTask>
+            {
+                new FocusTask { EndTime = new DateTime(2021, 01, 01, 01, 00, 01)},
+                new FocusTask { EndTime = new DateTime(2021, 01, 01, 01, 00, 02)},
+                new FocusTask { EndTime = new DateTime(2021, 01, 01, 01, 00, 00)}
+            });
+            var actual = _target.GetFocusTaskHistory();
+            Assert.That(actual, Is.Ordered.Descending.By(nameof(FocusTask.EndTime)));
+        }
+
         private void GivenToRepo(FocusTask focusTask)
         {
             _fakeRepo.GetFocusing().Returns(focusTask);

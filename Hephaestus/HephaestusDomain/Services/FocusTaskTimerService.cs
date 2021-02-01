@@ -32,15 +32,14 @@ namespace HephaestusDomain.Services
 
         public IEnumerable<FocusTask> GetFocusTaskHistory()
         {
-            var focusTaskHistory = _focusTaskRepo.GetHistory()
+            return _focusTaskRepo.GetHistory()
                 .Select(x => new FocusTask()
                 {
                     Name = x.Name,
                     StartTime = x.StartTime,
                     EndTime = x.EndTime,
                     ElapsedTime = (int)Math.Floor((x.EndTime - x.StartTime).TotalSeconds)
-                });
-            return focusTaskHistory;
+                }).OrderByDescending(x => x.EndTime);
         }
     }
 }
