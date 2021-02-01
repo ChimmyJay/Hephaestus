@@ -42,7 +42,7 @@ namespace HephaestusTests.UnitTests.Domains.Services
 
             _target.StartFocusingTask(startFocusingTaskDto);
 
-            _fakeRepo.Received(1).Set(startFocusingTaskDto);
+            _fakeRepo.Received(1).StartFocusing(startFocusingTaskDto);
         }
 
         [Test]

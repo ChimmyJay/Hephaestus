@@ -24,14 +24,8 @@ namespace HephaestusSQLiteRepo.Repos
                 : new FocusTask { Name = entity.Name, StartTime = entity.StartTime.UtcDateTime };
         }
 
-        public void Set(StartFocusingTaskDto dto)
+        public void StartFocusing(StartFocusingTaskDto dto)
         {
-            var focusTaskEntity = _context.FocusTasks.SingleOrDefault();
-            if (focusTaskEntity != null)
-            {
-                _context.FocusTasks.Remove(focusTaskEntity);
-            }
-
             _context.FocusTasks.Add(new FocusTaskEntity()
             {
                 Name = dto.Name,
