@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +20,8 @@ namespace HephaestusWeb
         public void ConfigureServices(IServiceCollection services)
         {
             var mvcBuilder = services.AddControllersWithViews();
+            var dataSourceConnectionString = Configuration.GetConnectionString("HephaestusDb");
+            services.AddSingleton<IControllerActivator>(new CustomControllerActivator(dataSourceConnectionString));
 #if DEBUG
             mvcBuilder.AddRazorRuntimeCompilation();
 #endif
