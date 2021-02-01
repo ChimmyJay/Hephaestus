@@ -1,10 +1,11 @@
 using HephaestusDomain.Services;
 using HephaestusSQLiteRepo;
+using HephaestusSQLiteRepo.Repos;
 using HephaestusWeb.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System;
-using HephaestusSQLiteRepo.Repos;
+using System.Collections.Generic;
 
 namespace HephaestusWeb
 {
@@ -32,6 +33,18 @@ namespace HephaestusWeb
 
         public void Release(ControllerContext context, object controller)
         {
+            var disposables =
+                (List<IDisposable>)context.HttpContext
+                    .Items["Disposables"];
+
+            if (disposables != null)
+            {
+                disposables.Reverse();
+                foreach (var disposable in disposables)
+                {
+                    disposable.Dispose();
+                }
+            }
         }
     }
 }
