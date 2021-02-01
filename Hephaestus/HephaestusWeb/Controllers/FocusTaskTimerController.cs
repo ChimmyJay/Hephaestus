@@ -2,8 +2,7 @@
 using HephaestusDomain.Services;
 using HephaestusWeb.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace HephaestusWeb.Controllers
 {
@@ -54,24 +53,15 @@ namespace HephaestusWeb.Controllers
         [HttpGet]
         public IActionResult GetFocusTaskHistory()
         {
-            var focusTaskHistoryViewModels = new List<FocusTaskHistoryViewModel>
-            {
-                new FocusTaskHistoryViewModel()
+            var data = _focusTaskTimerService.GetFocusTaskHistory()
+                .Select(x => new FocusTaskHistoryViewModel
                 {
-                    Name = "Test1",
-                    StartTime = DateTime.Now.AddMinutes(-5).ToString(),
-                    EndTime = DateTime.Now.AddMinutes(-3).ToString(),
-                    ElapsedTime = "00:02:00"
-                },
-                new FocusTaskHistoryViewModel()
-                {
-                    Name = "Test2",
-                    StartTime = DateTime.Now.AddMinutes(-2).ToString(),
-                    EndTime = DateTime.Now.AddMinutes(-1).ToString(),
-                    ElapsedTime = "00:01:00"
-                }
-            };
-            return Json(focusTaskHistoryViewModels);
+                    Name = x.Name,
+                    StartTime = x.StartTime.ToString("yyyy-MM-dd hh:mm:ss"),
+                    EndTime = x.EndTime.ToString("yyyy-MM-dd hh:mm:ss"),
+                    ElapsedTime = x.ElapsedTime
+                }).ToList();
+            return Json(data);
         }
     }
 }

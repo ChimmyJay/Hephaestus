@@ -1,6 +1,7 @@
 using HephaestusDomain.Models;
 using HephaestusDomain.Repos;
 using HephaestusSQLiteRepo.Entities;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HephaestusSQLiteRepo.Repos
@@ -46,6 +47,18 @@ namespace HephaestusSQLiteRepo.Repos
                 _context.FocusTasks.Remove(focusTaskEntity);
             }
             _context.SaveChanges();
+        }
+
+        public IEnumerable<FocusTask> GetHistory()
+        {
+            return _context.FocusTasks
+                .Where(x => x.EndTime.HasValue)
+                .Select(x => new FocusTask
+                {
+                    Name = x.Name,
+                    StartTime = x.StartTime.DateTime,
+                    EndTime = x.EndTime.Value.DateTime,
+                }).ToList();
         }
     }
 }

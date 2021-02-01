@@ -7,6 +7,8 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HephaestusTests.UnitTests.Web.Controllers
 {
@@ -78,6 +80,30 @@ namespace HephaestusTests.UnitTests.Web.Controllers
                 .Received(1)
                 .StopFocusingTask();
             HttpStatusCodeShouldBe(200);
+        }
+
+        [Test]
+        public void GetFocusTaskHistory()
+        {
+            _fakeFocusTaskTimerService.GetFocusTaskHistory()
+                .Returns(new List<FocusTask>
+                {
+                    new FocusTask()
+                    {
+                        Name = "Test1",
+                        StartTime = new DateTime(2021, 01, 01, 01, 00, 00),
+                        EndTime = new DateTime(2021, 01, 01, 01, 00, 20),
+                        ElapsedTime = 20
+                    }
+                });
+
+            var jsonResult = (JsonResult)_target.GetFocusTaskHistory();
+
+            var data = (List<FocusTaskHistoryViewModel>)jsonResult.Value;
+            Assert.AreEqual("Test1", data.Single().Name);
+            Assert.AreEqual("2021-01-01 01:00:00", data.Single().StartTime);
+            Assert.AreEqual("2021-01-01 01:00:20", data.Single().EndTime);
+            Assert.AreEqual(20, data.Single().ElapsedTime);
         }
 
         private void WhenServiceStopFocusingTask()

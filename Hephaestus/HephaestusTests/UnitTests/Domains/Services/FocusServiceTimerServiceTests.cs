@@ -4,6 +4,8 @@ using HephaestusDomain.Services;
 using NSubstitute;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HephaestusTests.UnitTests.Domains.Services
 {
@@ -48,7 +50,23 @@ namespace HephaestusTests.UnitTests.Domains.Services
         {
             _target.StopFocusingTask();
             _fakeRepo.Received(1).Clear();
+        }
 
+        [Test]
+        public void GetFocusTaskHistory()
+        {
+            _fakeRepo.GetHistory().Returns(new List<FocusTask>
+            {
+                new FocusTask()
+                {
+                    Name = "Test1",
+                    StartTime = new DateTime(2021, 01, 01, 01, 00, 00),
+                    EndTime = new DateTime(2021, 01, 01, 01, 00, 20),
+                }
+            });
+            var actual = _target.GetFocusTaskHistory();
+            Assert.AreEqual(20, actual.Single().ElapsedTime);
+            _fakeRepo.Received(1).GetHistory();
         }
 
         private void GivenToRepo(FocusTask focusTask)

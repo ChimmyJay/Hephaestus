@@ -13,5 +13,7 @@ namespace HephaestusSQLiteRepo.Entities
 
         [Required]
         public DateTimeOffset StartTime { get; set; }
+
+        public DateTimeOffset? EndTime { get; set; }
     }
 }
