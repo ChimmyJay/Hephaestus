@@ -82,6 +82,18 @@
             },
             OnStopFocus: function () {
                 this.IsFocusing = false;
+                fetch('FocusTaskTimer/StopFocusingTask',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }                    })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            alert('Occur error.');
+                        }
+                    });
+
             },
             StartCalculateElapsedTime: function () {
                 const self = this;
