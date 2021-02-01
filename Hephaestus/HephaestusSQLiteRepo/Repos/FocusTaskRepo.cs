@@ -37,5 +37,10 @@ namespace HephaestusSQLiteRepo.Repos
             });
             _context.SaveChanges();
         }
+
+        public void Clear()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

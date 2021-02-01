@@ -43,6 +43,14 @@ namespace HephaestusTests.UnitTests.Domains.Services
             _fakeRepo.Received(1).Set(startFocusingTaskDto);
         }
 
+        [Test]
+        public void StopFocusingTask()
+        {
+            _target.StopFocusingTask();
+            _fakeRepo.Received(1).Clear();
+
+        }
+
         private void GivenToRepo(FocusTask focusTask)
         {
             _fakeRepo.Get().Returns(focusTask);

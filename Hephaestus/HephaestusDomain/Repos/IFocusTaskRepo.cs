@@ -6,5 +6,6 @@ namespace HephaestusDomain.Repos
     {
         FocusTask Get();
         void Set(StartFocusingTaskDto dto);
+        void Clear();
     }
 }

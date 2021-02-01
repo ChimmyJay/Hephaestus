@@ -24,7 +24,7 @@ namespace HephaestusDomain.Services
 
         public void StopFocusingTask()
         {
-            throw new System.NotImplementedException();
+            _focusTaskRepo.Clear();
         }
     }
 }
