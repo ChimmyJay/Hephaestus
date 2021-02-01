@@ -40,7 +40,12 @@ namespace HephaestusSQLiteRepo.Repos
 
         public void Clear()
         {
-            throw new System.NotImplementedException();
+            var focusTaskEntity = _context.FocusTasks.SingleOrDefault();
+            if (focusTaskEntity != null)
+            {
+                _context.FocusTasks.Remove(focusTaskEntity);
+            }
+            _context.SaveChanges();
         }
     }
 }
