@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HephaestusWeb.Controllers
 {
@@ -7,7 +8,7 @@ namespace HephaestusWeb.Controllers
     {
         public IActionResult Index()
         {
-            return View("Error");
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }
 }
