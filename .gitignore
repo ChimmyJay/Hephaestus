@@ -436,3 +436,6 @@ $RECYCLE.BIN/
 Hephaestus/HephaestusSQLiteRepo/*.db
 Hephaestus/HephaestusSQLiteRepo/*.db-shm
 Hephaestus/HephaestusSQLiteRepo/*.db-wal
+
+# log folder
+logs/
