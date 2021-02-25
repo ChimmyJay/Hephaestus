@@ -83,21 +83,6 @@ namespace HephaestusTests.UnitTests.Domains.Services
         }
 
         [Test]
-        public void GetFocusTaskHistory_filter_filter_by_endTime_exceed_one_day()
-        {
-            _dateTimeProvider.Now().Returns(new DateTime(2021, 02, 02));
-            _fakeRepo.GetHistory().Returns(new List<FocusTask>
-            {
-                new FocusTask { EndTime = new DateTime(2021,02,01) },
-                new FocusTask { EndTime = new DateTime(2021,01,31) },
-                new FocusTask { EndTime = new DateTime(2021,01,30) },
-            });
-
-            var actual = _target.GetFocusTaskHistory();
-            Assert.AreEqual(1, actual.Count());
-        }
-
-        [Test]
         public void GetFocusTaskHistory_show_all_history()
         {
             _dateTimeProvider.Now().Returns(new DateTime(2021, 01, 01));
