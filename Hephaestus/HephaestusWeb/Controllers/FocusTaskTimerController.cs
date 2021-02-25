@@ -1,8 +1,8 @@
-﻿using HephaestusDomain.Models;
+﻿using System.Linq;
+using HephaestusDomain.Models;
 using HephaestusDomain.Services;
 using HephaestusWeb.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace HephaestusWeb.Controllers
 {
@@ -59,7 +59,7 @@ namespace HephaestusWeb.Controllers
                     Name = x.Name,
                     StartTime = x.StartTime,
                     EndTime = x.EndTime,
-                    ElapsedTime = x.ElapsedTime
+                    ElapsedTime = x.ElapsedTime()
                 }).ToList();
             return Json(data);
         }

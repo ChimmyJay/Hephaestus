@@ -75,7 +75,7 @@ namespace HephaestusTests.UnitTests.Domains.Services
 
             var actual = _target.GetFocusTaskHistory();
 
-            Assert.AreEqual(20, actual.Single().ElapsedTime);
+            Assert.AreEqual(20, actual.Single().ElapsedTime());
         }
 
         [Test]

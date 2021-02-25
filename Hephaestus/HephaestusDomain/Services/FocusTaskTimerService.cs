@@ -37,8 +37,7 @@ namespace HephaestusDomain.Services
                 {
                     Name = x.Name,
                     StartTime = x.StartTime,
-                    EndTime = x.EndTime,
-                    ElapsedTime = (int)Math.Floor((x.EndTime - x.StartTime).TotalSeconds)
+                    EndTime = x.EndTime
                 }).OrderByDescending(x => x.EndTime);
         }
     }
