@@ -7,6 +7,7 @@ namespace HephaestusDomain.Models
         public string Name { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public int ElapsedTime { get; set; }
+
+        public int ElapsedTime() => (int)Math.Floor((EndTime - StartTime).TotalSeconds);
     }
 }

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using HephaestusDomain.Models;
 using HephaestusDomain.Services;
 using HephaestusWeb.Controllers;
@@ -6,9 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HephaestusTests.UnitTests.Web.Controllers
 {
@@ -96,8 +96,7 @@ namespace HephaestusTests.UnitTests.Web.Controllers
                     {
                         Name = "Test1",
                         StartTime = new DateTime(2021, 01, 01, 01, 00, 00),
-                        EndTime = new DateTime(2021, 01, 01, 01, 00, 20),
-                        ElapsedTime = 20
+                        EndTime = new DateTime(2021, 01, 01, 01, 00, 20)
                     }
                 });
 
