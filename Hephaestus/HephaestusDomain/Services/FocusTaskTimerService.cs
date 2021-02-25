@@ -9,12 +9,10 @@ namespace HephaestusDomain.Services
     public class FocusTaskTimerService : IFocusTaskTimerService
     {
         private readonly IFocusTaskRepo _focusTaskRepo;
-        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public FocusTaskTimerService(IFocusTaskRepo fakeRepo, IDateTimeProvider dateTimeProvider)
+        public FocusTaskTimerService(IFocusTaskRepo fakeRepo)
         {
             _focusTaskRepo = fakeRepo;
-            _dateTimeProvider = dateTimeProvider;
         }
 
         public FocusTask GetFocusingTask()

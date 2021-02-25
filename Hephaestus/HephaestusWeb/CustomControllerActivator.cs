@@ -1,4 +1,3 @@
-using HephaestusDomain;
 using HephaestusDomain.Services;
 using HephaestusSQLiteRepo;
 using HephaestusSQLiteRepo.Repos;
@@ -27,7 +26,7 @@ namespace HephaestusWeb
                 return new FocusTaskTimerController(
                     new FocusTaskTimerService(
                         new FocusTaskRepo(
-                            new SQLiteContext(_dataSourceConnectionString)), new DateTimeProvider()));
+                            new SQLiteContext(_dataSourceConnectionString))));
             }
             if (type == typeof(ErrorController))
             {
