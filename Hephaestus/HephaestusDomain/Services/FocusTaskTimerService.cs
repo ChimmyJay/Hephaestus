@@ -1,8 +1,8 @@
-using HephaestusDomain.Models;
-using HephaestusDomain.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HephaestusDomain.Models;
+using HephaestusDomain.Repos;
 
 namespace HephaestusDomain.Services
 {
@@ -35,7 +35,6 @@ namespace HephaestusDomain.Services
         public IEnumerable<FocusTask> GetFocusTaskHistory()
         {
             return _focusTaskRepo.GetHistory()
-                .Where(x => x.EndTime >= _dateTimeProvider.Now().AddDays(-1))
                 .Select(x => new FocusTask()
                 {
                     Name = x.Name,
