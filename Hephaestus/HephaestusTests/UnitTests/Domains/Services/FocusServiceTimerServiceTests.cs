@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using HephaestusDomain;
 using HephaestusDomain.Models;
 using HephaestusDomain.Repos;
 using HephaestusDomain.Services;
 using NSubstitute;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HephaestusTests.UnitTests.Domains.Services
 {
@@ -95,6 +95,21 @@ namespace HephaestusTests.UnitTests.Domains.Services
 
             var actual = _target.GetFocusTaskHistory();
             Assert.AreEqual(1, actual.Count());
+        }
+
+        [Test]
+        public void GetFocusTaskHistory_show_all_history()
+        {
+            _dateTimeProvider.Now().Returns(new DateTime(2021, 01, 01));
+            _fakeRepo.GetHistory().Returns(new List<FocusTask>
+            {
+                new FocusTask { EndTime = new DateTime(2020,01,01) },
+                new FocusTask { EndTime = new DateTime(2021,01,01) },
+                new FocusTask { EndTime = new DateTime(2022,01,01) },
+            });
+
+            var actual = _target.GetFocusTaskHistory();
+            Assert.AreEqual(3, actual.Count());
         }
 
         [Test]
