@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 </head>
 <div id="app">
-    <div class="text-center">
+    <div v-if="isInit" class="text-center">
         <div class="input-group">
             <button v-for="item in categories" class="">{{item}}</button>
         </div>
@@ -55,7 +55,8 @@
             ElapsedTime: 0,
             timer: null,
             histories: [],
-            categories: ["None"]
+            categories: ["None"],
+            isInit: false
         },
         created: function () {
             const self = this;
@@ -74,6 +75,7 @@
                     if (data.categories) {
                         data.categories.forEach(x => self.categories.push(x));
                     }
+                    self.isInit = true;
                 });
             this.updateHistories();
         },
