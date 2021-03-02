@@ -6,6 +6,9 @@
 <div id="app">
     <div class="text-center">
         <div class="input-group">
+            <button v-for="item in categories" class="">{{item}}</button>
+        </div>
+        <div class="input-group">
             <input type="text" class="form-control" placeholder="Type task name in this"
                    v-model="FocusTask" :disabled="IsFocusing" />
             <button type="button" class="btn btn-success"
@@ -51,7 +54,8 @@
             IsFocusing: false,
             ElapsedTime: 0,
             timer: null,
-            histories: []
+            histories: [],
+            categories: []
         },
         created: function () {
             const self = this;
@@ -62,6 +66,13 @@
                         self.FocusTask = data.taskName;
                         self.ElapsedTime = Math.floor((Date.now() - Date.parse(data.taskStartTime)) / 1000);
                         self.IsFocusing = true;
+                    }
+                });
+            fetch('FocusTaskTimer/GetAllCategory', { method: 'GET' })
+                .then(response => { return response.json(); })
+                .then(data => {
+                    if (data.categories) {
+                        data.categories.forEach(x => self.categories.push(x));
                     }
                 });
             this.updateHistories();
