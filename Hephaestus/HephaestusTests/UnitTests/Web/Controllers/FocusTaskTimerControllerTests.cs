@@ -109,6 +109,24 @@ namespace HephaestusTests.UnitTests.Web.Controllers
             Assert.AreEqual(20, data.Single().ElapsedTime);
         }
 
+        [Test]
+        public void GetAllCategory()
+        {
+            GivenCategories(new List<Category>
+            {
+                new Category {Name = "TestCategory1"}
+            });
+            var jsonResult = (JsonResult)_target.GetAllCategory();
+            var data = (GetAllCategoryResponse)jsonResult.Value;
+            Assert.AreEqual(data.Categories.Single(), "TestCategory1");
+        }
+
+        private void GivenCategories(IEnumerable<Category> categories)
+        {
+            _fakeFocusTaskTimerService.GetAllCategory()
+                .Returns(categories);
+        }
+
         private void WhenServiceStartFocusingTask(StartFocusingTaskRequest request)
         {
             _actual = _target.StartFocusingTask(request);

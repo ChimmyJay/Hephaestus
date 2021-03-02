@@ -40,5 +40,10 @@ namespace HephaestusDomain.Services
                     EndTime = x.EndTime
                 }).OrderByDescending(x => x.EndTime);
         }
+
+        public IEnumerable<Category> GetAllCategory()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace HephaestusDomain.Services
         void StopFocusingTask(DateTime endTime);
 
         IEnumerable<FocusTask> GetFocusTaskHistory();
+        IEnumerable<Category> GetAllCategory();
     }
 }
