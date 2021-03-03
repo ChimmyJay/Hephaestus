@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using HephaestusDomain.Models;
 using HephaestusDomain.Services;
 using HephaestusWeb.Models;
@@ -65,14 +66,12 @@ namespace HephaestusWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllCategory()
+        public ActionResult<IEnumerable<string>> GetAllCategory()
         {
-            var allCategory = _focusTaskTimerService.GetAllCategory();
-            var resp = new GetAllCategoryResponse();
-            resp.Categories = allCategory
-                .Select(x => x.Name)
-                .ToList();
-            return Json(resp);
+            return _focusTaskTimerService.GetAllCategory()
+                    .Select(x => x.Name)
+                    .ToList()
+;
         }
     }
 }

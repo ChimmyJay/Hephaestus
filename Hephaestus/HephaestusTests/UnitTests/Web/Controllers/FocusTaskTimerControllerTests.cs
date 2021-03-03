@@ -116,9 +116,8 @@ namespace HephaestusTests.UnitTests.Web.Controllers
             {
                 new Category {Name = "TestCategory1"}
             });
-            var jsonResult = (JsonResult)_target.GetAllCategory();
-            var data = (GetAllCategoryResponse)jsonResult.Value;
-            Assert.AreEqual(data.Categories.Single(), "TestCategory1");
+            var result = _target.GetAllCategory();
+            Assert.AreEqual("TestCategory1", result.Value.Single());
         }
 
         private void GivenCategories(IEnumerable<Category> categories)
