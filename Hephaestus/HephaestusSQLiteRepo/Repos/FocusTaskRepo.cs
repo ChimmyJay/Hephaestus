@@ -1,9 +1,9 @@
-using HephaestusDomain.Models;
-using HephaestusDomain.Repos;
-using HephaestusSQLiteRepo.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HephaestusDomain.Models;
+using HephaestusDomain.Repos;
+using HephaestusSQLiteRepo.Entities;
 
 namespace HephaestusSQLiteRepo.Repos
 {
@@ -54,6 +54,11 @@ namespace HephaestusSQLiteRepo.Repos
                     StartTime = x.StartTime.UtcDateTime,
                     EndTime = x.EndTime.Value.UtcDateTime,
                 }).ToList();
+        }
+
+        public IEnumerable<Category> GetAllCategory()
+        {
+            throw new NotImplementedException();
         }
     }
 }

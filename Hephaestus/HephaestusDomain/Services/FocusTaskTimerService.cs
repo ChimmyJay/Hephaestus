@@ -43,7 +43,7 @@ namespace HephaestusDomain.Services
 
         public IEnumerable<Category> GetAllCategory()
         {
-            throw new NotImplementedException();
+            return _focusTaskRepo.GetAllCategory();
         }
     }
 }

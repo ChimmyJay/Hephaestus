@@ -65,7 +65,7 @@ namespace HephaestusTests.UnitTests.Domains.Services
         {
             _fakeRepo.GetHistory().Returns(new List<FocusTask>
             {
-                new FocusTask()
+                new FocusTask
                 {
                     Name = "Test1",
                     StartTime = new DateTime(2021,01,01).AddSeconds(-20),
@@ -104,6 +104,32 @@ namespace HephaestusTests.UnitTests.Domains.Services
                 });
             var actual = _target.GetFocusTaskHistory();
             Assert.That(actual, Is.Ordered.Descending.By(nameof(FocusTask.EndTime)));
+        }
+
+        [Test]
+        public void GetAllCategory_should_call_repo_GetAllCategory_once()
+        {
+            _target.GetAllCategory();
+            _fakeRepo.Received(1).GetAllCategory();
+        }
+
+        [Test]
+        public void GetAllCategory_should_return_all_category()
+        {
+            var expected = new List<Category>
+            {
+                new Category {Name = "Test1"},
+                new Category {Name = "Test2"}
+            };
+            GivenCategories(expected);
+            var actual = _target.GetAllCategory();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        private void GivenCategories(IEnumerable<Category> expected)
+        {
+            _fakeRepo.GetAllCategory()
+                .Returns(expected);
         }
 
         private void GivenToRepo(FocusTask focusTask)

@@ -1,6 +1,7 @@
 using System;
-using HephaestusDomain.Models;
+using System.Collections;
 using System.Collections.Generic;
+using HephaestusDomain.Models;
 
 namespace HephaestusDomain.Repos
 {
@@ -13,5 +14,7 @@ namespace HephaestusDomain.Repos
         void StopFocusing(DateTime endTime);
 
         IEnumerable<FocusTask> GetHistory();
+
+        IEnumerable<Category> GetAllCategory();
     }
 }
