@@ -13,6 +13,7 @@ namespace HephaestusSQLiteRepo
         }
 
         public DbSet<FocusTaskEntity> FocusTasks { get; set; }
+        public DbSet<CategoryEntity> Categories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

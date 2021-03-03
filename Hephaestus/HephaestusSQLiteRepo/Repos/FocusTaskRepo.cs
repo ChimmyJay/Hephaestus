@@ -58,7 +58,11 @@ namespace HephaestusSQLiteRepo.Repos
 
         public IEnumerable<Category> GetAllCategory()
         {
-            throw new NotImplementedException();
+            return _context.Categories
+                .Select(x => new Category
+                {
+                    Name = x.Name
+                });
         }
     }
 }
