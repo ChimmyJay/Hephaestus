@@ -73,5 +73,16 @@ namespace HephaestusWeb.Controllers
                     .ToList()
 ;
         }
+
+        [HttpPost]
+        public IActionResult CreateCategory([FromBody] CreateCategoryRequest createCategoryRequest)
+        {
+            if (string.IsNullOrWhiteSpace(createCategoryRequest.Name))
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
     }
 }
